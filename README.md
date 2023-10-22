@@ -4,7 +4,7 @@
 2.  в файле _.env_
     - USERID -- ID twitch
     - YOUTUBEKEY -- API key youtube
-        > [где получить](https://console.cloud.google.com/apis/credentials) заренистрироваться и во вкладке credentials получит API Key
+        > [где получить](https://console.cloud.google.com/apis/credentials) зарегистрироваться и во вкладке Сredentials получит API Key
     - AUDIOPATH -- абсолютный путь до папки с музыкой
         > в папке будет подгружаться музыка с расширениями: .mp3, .mp4, .webm (остальные форматы игнорятся)
 3. в файле _config.yaml_
