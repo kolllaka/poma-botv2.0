@@ -111,12 +111,3 @@ body {
 .itemplaylist__cell-n {
 	justify-self: start;
 }
-.itemplaylist__cell.del {
-  cursor: pointer;
-}
-.itemplaylist__cell.del:hover {
-  opacity: 0.7;
-}
-.itemplaylist__cell.del:active {
-  opacity: 0.5;
-}
