@@ -108,6 +108,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+.itemplaylist__cell-n {
+	justify-self: start;
+}
 .itemplaylist__cell.del {
   cursor: pointer;
 }

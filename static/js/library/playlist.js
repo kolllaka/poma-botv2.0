@@ -75,7 +75,7 @@ const getTemplate = (title) => {
 			<div class="itemplaylist__body">
 				<div class="itemplaylist__cell">№№</div>
 				<div class="itemplaylist__cell">кто заказал:</div>
-				<div class="itemplaylist__cell">название:</div>
+				<div class="itemplaylist__cell itemplaylist__cell-n">название:</div>
 				<div class="itemplaylist__cell">время</div>
 				<div class="itemplaylist__cell">удалить</div>
 			</div>
@@ -94,7 +94,7 @@ const getTemplateItem = (song, index) => {
 		<div class="itemplaylist__body">
 			<div class="itemplaylist__cell">${index + 1}</div>
 			<div class="itemplaylist__cell">${song.name || "owner"}</div>
-			<div class="itemplaylist__cell">${song.title}</div>
+			<div class="itemplaylist__cell itemplaylist__cell-n">${song.title}</div>
 			<div class="itemplaylist__cell">${duration}</div>
 			<div data-index="${index}" class="itemplaylist__cell del btn">x</div>
 		</div>

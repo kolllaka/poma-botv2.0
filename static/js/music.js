@@ -7,33 +7,10 @@ const myPlayer = document.getElementById("myplayer")
 
 
 const music = new Playlist("music", [
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: 'hxqW1Eq0iP4', duration: 238 },
-	// { name: 'KoLLIaka', title: '◤Nightcore◢ ↬ Criminal [Switching Vocals]', link: 'WCL-sYe02Xg', duration: 242 },
-	// { name: 'KoLLIaka', title: 'Take Me On!', link: 'xmJGiUTSh5E', duration: 255 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: 'hxqW1Eq0iP4', duration: 238 },
-	// { name: 'KoLLIaka', title: '◤Nightcore◢ ↬ Criminal [Switching Vocals]', link: 'WCL-sYe02Xg', duration: 242 },
-	// { name: 'KoLLIaka', title: 'Take Me On!', link: 'xmJGiUTSh5E', duration: 255 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: 'hxqW1Eq0iP4', duration: 238 },
-	// { name: 'KoLLIaka', title: '◤Nightcore◢ ↬ Criminal [Switching Vocals]', link: 'WCL-sYe02Xg', duration: 242 },
-	// { name: 'KoLLIaka', title: 'Take Me On!', link: 'xmJGiUTSh5E', duration: 255 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: 'hxqW1Eq0iP4', duration: 238 },
-	// { name: 'KoLLIaka', title: '◤Nightcore◢ ↬ Criminal [Switching Vocals]', link: 'WCL-sYe02Xg', duration: 242 },
-	// { name: 'KoLLIaka', title: 'Take Me On!', link: 'xmJGiUTSh5E', duration: 255 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: 'hxqW1Eq0iP4', duration: 238 },
-	// { name: 'KoLLIaka', title: '◤Nightcore◢ ↬ Criminal [Switching Vocals]', link: 'WCL-sYe02Xg', duration: 242 },
-	// { name: 'KoLLIaka', title: 'Take Me On!', link: 'xmJGiUTSh5E', duration: 255 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: 'hxqW1Eq0iP4', duration: 238 },
-	// { name: 'KoLLIaka', title: '◤Nightcore◢ ↬ Criminal [Switching Vocals]', link: 'WCL-sYe02Xg', duration: 242 },
-	{ name: 'KoLLIaka', title: 'Take Me On!', link: 'xmJGiUTSh5E', duration: 255 },
 ], "очередь заказов", sendSocket)
 
 
 const myMusic = new Playlist("mymusic", [
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: './static/playlist/3.mp3', duration: 238 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: './static/playlist/2.webm', duration: 238 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: './static/playlist/1.webm', duration: 238 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: './static/playlist/2.webm', duration: 238 },
-	// { name: 'KoLLIaka', title: 'Courtesy Call - Thousand Foot Krutch (Lyrics)', link: './static/playlist/1.webm', duration: 238 },
 ], "мой плейлист")
 
 
