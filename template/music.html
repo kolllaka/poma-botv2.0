@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="./static/img/note.png" type="image/x-icon">
+	<link rel="stylesheet" href="./static/css/null.css">
+	<link rel="stylesheet" href="./static/css/music.css">
+	<title>Music</title>
+</head>
+
+<body>
+	<div class="video">
+		<div class="video__body">
+			<div class="video__column">
+				<div id="player"></div>
+				<div class="player__volume">
+					<label for="volume">
+						громкость:
+						<input id="volume" type="range" value="50" min="0" max="100">
+					</label>
+				</div>
+				<div id="playerControl" class="video__btns">
+					<div data-btn="skip" class="video__btn btn">скип</div>
+					<div data-btn="shuffle" class="video__btn btn">шафл</div>
+				</div>
+				<audio id="myplayer" src="" controls type="audio/mpeg"></audio>
+			</div>
+			<div class="video__column">
+				<div id="music">
+
+				</div>
+
+				<div id="mymusic">
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script src="./static/js/library/ws.js"></script>
+<script src="./static/js/library/playlist.js"></script>
+<script src="./static/js/library/server.js"></script>
+<script src="./static/js/library/player.js"></script>
+
+<script src="./static/js/music.js"></script>
+
+</html>

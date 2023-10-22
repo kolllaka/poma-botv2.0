@@ -1,0 +1,11 @@
+rewards:
+- type: text
+  rewardName: ''
+  rewardTitle: ''
+- type: music
+  rewardName: 'Заказать музыку'
+  rewardTitle: ''
+  duration: 600
+- type: augury
+  rewardName: 'гадание'
+  rewardTitle: '%s сегодня'
