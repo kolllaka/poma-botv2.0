@@ -56,8 +56,9 @@ function onPlayerReady(event) {
 
 
 
-let isYPlaying = false
-let isPlaying = false
+let isYPlaying = false,
+	isPlaying = false,
+	isYPlay = isYPlaying
 const toggleBtn = document.getElementById("playerControl").querySelector("[data-btn='play']")
 console.log(toggleBtn);
 const togglePlay = () => {
@@ -126,7 +127,7 @@ const nextSongHandler = () => {
 	}
 }
 
-let isYPlay = isYPlaying
+
 document.getElementById("playerControl").addEventListener("click", (e) => {
 	e.preventDefault()
 	switch (e.target.dataset.btn) {
