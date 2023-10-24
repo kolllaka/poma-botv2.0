@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/KoLLlaka/__augury/internal/model"
+	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 )
 
 var (
@@ -66,7 +66,6 @@ func SongRequest(text string) (string, error) {
 }
 
 // проверка на аудио
-
 func ListOfSongsFromPlaylist(playlistId string, key string, next string) []*model.Playlist {
 	type ListResp struct {
 		NextPageToken string `json:"nextPageToken,omitempty"`

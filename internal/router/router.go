@@ -3,7 +3,6 @@ package router
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -12,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/KoLLlaka/__augury/internal/model"
-	"github.com/KoLLlaka/__augury/internal/playlist"
+	"github.com/KoLLlaka/poma-botv2.0/internal/model"
+	"github.com/KoLLlaka/poma-botv2.0/internal/playlist"
 
 	"github.com/gorilla/websocket"
 )
@@ -44,10 +43,8 @@ func init() {
 	}
 
 	for _, file := range files {
-		fmt.Printf("%s ", file.Name())
 		augFiles = append(augFiles, file.Name())
 	}
-	fmt.Println()
 }
 
 type Server struct {

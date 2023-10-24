@@ -3,10 +3,7 @@ package model
 type Config struct {
 	Port       string
 	Host       string
-	UserName   string
 	UserID     string
-	BotName    string
-	BotAuth    string
 	YoutubeKey string
 	AudioPath  string
 	Rewards    map[string]ConfigReward

@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/KoLLlaka/__augury/internal/model"
+	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
 )
@@ -13,10 +13,7 @@ import (
 const (
 	HOST       = "HOST"
 	PORT       = "PORT"
-	USERNAM    = "USERNAM"
 	USERID     = "USERID"
-	BOTNAME    = "BOTNAME"
-	BOTAUTH    = "BOTAUTH"
 	YOUTUBEKEY = "YOUTUBEKEY"
 	AUDIOPATH  = "AUDIOPATH"
 )
@@ -48,24 +45,14 @@ func NewConfig() *model.Config {
 			reward.Duration = 600
 		}
 
-		if reward.Duration == 0 && reward.RewardType == "ban" {
-			reward.Duration = 60
-		}
-
 		rewards[name] = reward
 	}
-
-	userName := strings.ToLower(getEnv(USERNAM, ""))
-	log.Printf("from config: %s\n", userName)
 
 	return &model.Config{
 		Host:       getEnv(HOST, "localhost"),
 		Port:       getEnv(PORT, "8080"),
-		UserName:   userName,
 		UserID:     getEnv(USERID, ""),
 		YoutubeKey: getEnv(YOUTUBEKEY, ""),
-		BotName:    strings.ToLower(getEnv(BOTNAME, "")),
-		BotAuth:    getEnv(BOTAUTH, ""),
 		AudioPath:  getEnv(AUDIOPATH, "./static/playlist"),
 		Rewards:    rewards,
 	}

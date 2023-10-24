@@ -1,7 +1,4 @@
 rewards:
-- type: text
-  rewardName: ''
-  rewardTitle: ''
 - type: music
   rewardName: 'Заказать музыку'
   rewardTitle: ''
