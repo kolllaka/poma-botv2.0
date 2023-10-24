@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/KoLLlaka/poma-botv2.0/internal/logging"
 	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 )
 
@@ -21,22 +22,27 @@ var (
 	}
 )
 
+var logger logging.Logger
+
+func init() {
+	logger = logging.GetLogger()
+}
+
 func LoadMyPlaylist(path string) []model.Playlist {
 	playlist := []model.Playlist{}
 	files, err := os.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatalln(err)
 	}
 
-	i := 0
+	count := 0
 	for _, file := range files {
-		i++
+		count++
 		ext := filepath.Ext(file.Name())
 		if _, ok := trueFiles[ext]; !ok {
 			continue
 		}
 
-		fmt.Printf("%s ", file.Name())
 		playlist = append(playlist, model.Playlist{
 			IsYouTube: false,
 			IsReward:  false,
@@ -44,7 +50,7 @@ func LoadMyPlaylist(path string) []model.Playlist {
 			Link:      fmt.Sprintf("./audio/%s", file.Name()),
 		})
 	}
-	fmt.Println("общее количество файлов:", i)
+	logger.Infof("загруженно треков: %d", count)
 
 	return playlist
 }
@@ -84,7 +90,7 @@ func ListOfSongsFromPlaylist(playlistId string, key string, next string) []*mode
 	}
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println(err)
+		logger.Errorln(err)
 
 		return nil
 	}
@@ -133,7 +139,7 @@ func ReqSongInfo(song string, key string) []*model.Playlist {
 	url := fmt.Sprintf("https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=snippet,contentDetails,statistics", song, key)
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println(err)
+		logger.Errorln(err)
 
 		return nil
 	}

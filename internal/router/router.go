@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
-	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
+	"github.com/KoLLlaka/poma-botv2.0/internal/logging"
 	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 	"github.com/KoLLlaka/poma-botv2.0/internal/playlist"
 
@@ -37,9 +37,13 @@ var (
 func init() {
 	tmpl = template.Must(template.ParseGlob("template/*.html"))
 
-	files, err := ioutil.ReadDir("./static/aug")
+	if err := os.MkdirAll("static/aug", os.FileMode(0644)); err != nil {
+		panic(err)
+	}
+
+	files, err := os.ReadDir("./static/aug")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	for _, file := range files {
@@ -48,6 +52,8 @@ func init() {
 }
 
 type Server struct {
+	logger logging.Logger
+
 	conf          *model.Config
 	clients       map[string]*websocket.Conn
 	handleMessage func(message []byte)
@@ -57,15 +63,16 @@ type Server struct {
 	myPlaylist []model.Playlist
 }
 
-func New(conf *model.Config,
+func New(logger logging.Logger, conf *model.Config,
 	augChan chan string, musicChan chan model.Playlist,
 	myPlaylist []model.Playlist,
 ) *Server {
 	return &Server{
+		logger:  logger,
 		conf:    conf,
 		clients: make(map[string]*websocket.Conn),
 		handleMessage: func(message []byte) {
-			log.Printf("[message] %s", message)
+			logger.Infof("[message from socket] %s", message)
 		},
 		augChan:    augChan,
 		musicChan:  musicChan,
@@ -119,10 +126,8 @@ func (s *Server) augws(w http.ResponseWriter, r *http.Request) {
 		s1 := rand.NewSource(time.Now().UnixNano())
 		r1 := rand.New(s1)
 		num := r1.Intn(len(augFiles))
-		// fmt.Println(num)
 		link := augFiles[num]
 
-		// log.Println(link)
 		augMsg := ReqAug{
 			Name: name,
 			Link: "./static/aug/" + link,
@@ -132,7 +137,7 @@ func (s *Server) augws(w http.ResponseWriter, r *http.Request) {
 		enc := json.NewEncoder(&network)
 		err := enc.Encode(augMsg)
 		if err != nil {
-			log.Println(err)
+			s.logger.Errorln(err)
 			return
 		}
 
@@ -165,7 +170,7 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 			mt, message, err := conn.ReadMessage()
 
 			if err != nil || mt == websocket.CloseMessage {
-				log.Printf("[error] %v", err)
+				s.logger.Errorf("[error from socket] %+v", err)
 
 				break // Выходим из цикла, если клиент пытается закрыть соединение или связь прервана
 			}
@@ -189,7 +194,7 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 		enc := json.NewEncoder(&network)
 		err := enc.Encode(augMsg)
 		if err != nil {
-			log.Println(err)
+			s.logger.Errorln(err)
 
 			return
 		}
@@ -206,9 +211,9 @@ func (s *Server) yplaylist(w http.ResponseWriter, r *http.Request) {
 	resp := Playlist{}
 	err := json.NewDecoder(r.Body).Decode(&resp)
 	if err != nil {
-		log.Println("[error]", err)
+		s.logger.Errorln("[error from music]", err)
 	}
-	log.Println("[info] request from server:", resp.Link)
+	s.logger.Infoln("[info] request from server:", resp.Link)
 
 	songs := playlist.ListOfSongsFromPlaylist(resp.Link, s.conf.YoutubeKey, "")
 	var songsLink []string

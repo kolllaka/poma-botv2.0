@@ -1,10 +1,10 @@
 package config
 
 import (
-	"log"
 	"os"
 	"strings"
 
+	"github.com/KoLLlaka/poma-botv2.0/internal/logging"
 	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
@@ -18,10 +18,13 @@ const (
 	AUDIOPATH  = "AUDIOPATH"
 )
 
+var logger logging.Logger
+
 // loads values from .env into the system
 func init() {
+	logger = logging.GetLogger()
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("No .env file found")
+		logger.Fatalln("No .env file found")
 	}
 }
 
@@ -30,11 +33,11 @@ func NewConfig() *model.Config {
 	yamlFile, err := os.ReadFile("./config.yaml")
 	yamlConf := &model.YAMLConfig{}
 	if err != nil {
-		log.Fatal("No .yaml file found")
+		logger.Fatalln("No .yaml file found")
 	}
 	err = yaml.Unmarshal(yamlFile, yamlConf)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatalln(err)
 	}
 
 	rewards := make(map[string]model.ConfigReward)
