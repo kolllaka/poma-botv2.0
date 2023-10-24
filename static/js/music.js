@@ -7,9 +7,13 @@ const sendSocket = (data) => {
 // video
 const myPlayer = document.getElementById("myplayer")
 
-const music = new Playlist("music", [], "очередь заказов", sendSocket)
+const music = new Playlist("music", [
+	{ isyoutube: true, title: "[HyunA&DAWN] 'PING PONG' MV", link: '0aaeUI1ucfQ', duration: 161 },
+], "очередь заказов", sendSocket)
 
-const myMusic = new Playlist("mymusic", [], "мой плейлист")
+const myMusic = new Playlist("mymusic", [
+	{ title: '1.mp4', link: './audio/1.mp4' }
+], "мой плейлист")
 
 const getMetaData = async (song) => {
 	const audio = new Audio(song.link)
@@ -50,12 +54,47 @@ function onPlayerReady(event) {
 	event.target.playVideo()
 }
 
-// when video ends
-function onPlayerStateChange(event) {
-	if (event.data == YT.PlayerState.ENDED) {
-		nextSongHandler()
+
+
+let isYPlaying = false
+let isPlaying = false
+const toggleBtn = document.getElementById("playerControl").querySelector("[data-btn='play']")
+console.log(toggleBtn);
+const togglePlay = () => {
+	if (isYPlaying || isPlaying) {
+		toggleBtn.classList.add("btn-play")
+		toggleBtn.classList.remove("btn-pause")
+	} else {
+		toggleBtn.classList.remove("btn-play")
+		toggleBtn.classList.add("btn-pause")
 	}
 }
+// when video change state
+function onPlayerStateChange(event) {
+	isYPlaying = false
+	if (event.data == YT.PlayerState.ENDED) {
+		nextSongHandler()
+
+		return
+	}
+
+	if (event.data == YT.PlayerState.PLAYING) {
+		isYPlaying = true
+	}
+
+	togglePlay()
+}
+
+myPlayer.onplay = (e) => {
+	isPlaying = true
+	togglePlay()
+}
+
+myPlayer.onpause = (e) => {
+	isPlaying = false
+	togglePlay()
+}
+
 
 // myPlayer
 myPlayer.addEventListener('ended', (e) => {
@@ -87,6 +126,7 @@ const nextSongHandler = () => {
 	}
 }
 
+let isYPlay = isYPlaying
 document.getElementById("playerControl").addEventListener("click", (e) => {
 	e.preventDefault()
 	switch (e.target.dataset.btn) {
@@ -100,6 +140,23 @@ document.getElementById("playerControl").addEventListener("click", (e) => {
 			break
 		case "shuffle":
 			shuffledBtnHandler(e)
+
+			break
+		case "play":
+			if (isYPlaying || isPlaying) {
+				// play
+				isYPlay = isYPlaying
+				myPlayer.pause()
+				player.pauseVideo()
+			} else {
+				// pause
+				if (isYPlay) {
+					player.playVideo()
+				} else {
+					myPlayer.play()
+				}
+			}
+
 
 			break
 	}
