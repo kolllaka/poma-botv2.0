@@ -7,13 +7,9 @@ const sendSocket = (data) => {
 // video
 const myPlayer = document.getElementById("myplayer")
 
-const music = new Playlist("music", [
-	{ isyoutube: true, title: "[HyunA&DAWN] 'PING PONG' MV", link: '0aaeUI1ucfQ', duration: 161 },
-], "очередь заказов", sendSocket)
+const music = new Playlist("music", [], "очередь заказов", sendSocket)
 
-const myMusic = new Playlist("mymusic", [
-	{ title: '1.mp4', link: './audio/1.mp4' }
-], "мой плейлист")
+const myMusic = new Playlist("mymusic", [], "мой плейлист")
 
 const getMetaData = async (song) => {
 	const audio = new Audio(song.link)
