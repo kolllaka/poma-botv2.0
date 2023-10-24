@@ -4,42 +4,23 @@ const sendSocket = (data) => {
 	socket.send(JSON.stringify(data))
 }
 
-
 // video
 const myPlayer = document.getElementById("myplayer")
-
 
 const music = new Playlist("music", [
 ], "очередь заказов", sendSocket)
 
-
 const myMusic = new Playlist("mymusic", [
 ], "мой плейлист")
-
-
 
 const getMetaData = async (song) => {
 	const audio = new Audio(song.link)
 	audio.onloadedmetadata = () => {
 		song.duration = audio.duration
-		console.log(audio.audioTracks);
+
 		myMusic.addSong(song);
 	}
 }
-
-toServer("http://localhost:8080/api/playlist", "GET")
-	.then((resp) => {
-		console.log(resp);
-		resp.forEach((song) => {
-			getMetaData(song)
-
-		})
-	})
-	.catch((err) => {
-		console.log(err);
-	})
-
-
 const WEBSOCKET = 'ws://127.0.0.1:8080/music/ws'
 const handler = () => {
 	console.log(msgStruct)
@@ -49,12 +30,11 @@ const handler = () => {
 		return
 	}
 
-	myMusic.addSong(msgStruct)
+	getMetaData(msgStruct)
 }
 
-
-
 connectWS(WEBSOCKET, handler)
+
 // volume 
 const volume = document.getElementById('volume')
 volume.value = VolumeLevel
@@ -157,4 +137,3 @@ const sendBtnHandler = (e) => {
 const shuffledBtnHandler = (e) => {
 	myMusic.shuffle()
 }
-

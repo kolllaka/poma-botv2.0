@@ -89,7 +89,6 @@ func (s *Server) Start() *http.ServeMux {
 	router.HandleFunc("/"+MUSIC, s.music)
 	router.HandleFunc("/"+MUSIC+"/ws", s.musicws)
 	router.HandleFunc("/api/yplaylist", s.yplaylist)
-	router.HandleFunc("/api/playlist", s.playlist)
 
 	return router
 }
@@ -157,14 +156,6 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 	s.clients[MUSIC] = conn
 	defer delete(s.clients, MUSIC)
 
-	type ReqAug struct {
-		IsReward bool   `json:"isreward,omitempty"`
-		Name     string `json:"name,omitempty"`
-		Title    string `json:"title,omitempty"`
-		Link     string `json:"link,omitempty"`
-		Duration int    `json:"duration,omitempty"`
-	}
-
 	go func() {
 		for {
 			mt, message, err := conn.ReadMessage()
@@ -179,20 +170,27 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	go func() {
+		for _, song := range s.myPlaylist {
+			var network bytes.Buffer
+			enc := json.NewEncoder(&network)
+			err := enc.Encode(song)
+			if err != nil {
+				s.logger.Errorln(err)
+
+				return
+			}
+
+			s.writeByteMsg(MUSIC, network.Bytes())
+		}
+	}()
+
 	for {
 		musicStruct := <-s.musicChan
 
-		augMsg := ReqAug{
-			IsReward: musicStruct.IsReward,
-			Name:     musicStruct.Name,
-			Title:    musicStruct.Title,
-			Link:     musicStruct.Link,
-			Duration: musicStruct.Duration,
-		}
-
 		var network bytes.Buffer
 		enc := json.NewEncoder(&network)
-		err := enc.Encode(augMsg)
+		err := enc.Encode(musicStruct)
 		if err != nil {
 			s.logger.Errorln(err)
 
@@ -236,10 +234,6 @@ func (s *Server) yplaylist(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(listOfSongs)
-}
-func (s *Server) playlist(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(s.myPlaylist)
 }
 
 // sss
