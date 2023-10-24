@@ -15,18 +15,32 @@
 	<div class="video">
 		<div class="video__body">
 			<div class="video__column">
-				<div id="player"></div>
-				<div class="player__volume">
-					<label for="volume">
-						громкость:
-						<input id="volume" type="range" min="0" max="100">
+				<div class="video__row">
+					<div id="player"></div>
+				</div>
+				<div class="video__row">
+					<label class="video__played">
+						cейчас играет:<br />
+						<span id="video__played"></span>
 					</label>
 				</div>
-				<div id="playerControl" class="video__btns">
-					<div data-btn="skip" class="video__btn btn">скип</div>
-					<div data-btn="shuffle" class="video__btn btn">шафл</div>
+				<div class="video__row">
+					<div class="player__volume">
+						<label for="volume">
+							громкость:
+							<input id="volume" type="range" min="0" max="100">
+						</label>
+					</div>
 				</div>
-				<audio id="myplayer" src="" controls type="audio/mpeg"></audio>
+				<div class="video__row">
+					<div id="playerControl" class="video__btns">
+						<div data-btn="skip" class="video__btn btn">скип</div>
+						<div data-btn="shuffle" class="video__btn btn">шафл</div>
+					</div>
+				</div>
+				<div class="video__row">
+					<audio id="myplayer" src="" controls type="audio/mpeg"></audio>
+				</div>
 			</div>
 			<div class="video__column">
 				<div id="music">

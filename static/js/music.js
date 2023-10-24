@@ -7,11 +7,9 @@ const sendSocket = (data) => {
 // video
 const myPlayer = document.getElementById("myplayer")
 
-const music = new Playlist("music", [
-], "очередь заказов", sendSocket)
+const music = new Playlist("music", [], "очередь заказов", sendSocket)
 
-const myMusic = new Playlist("mymusic", [
-], "мой плейлист")
+const myMusic = new Playlist("mymusic", [], "мой плейлист")
 
 const getMetaData = async (song) => {
 	const audio = new Audio(song.link)
@@ -64,6 +62,7 @@ myPlayer.addEventListener('ended', (e) => {
 	nextSongHandler()
 })
 
+const playedVideoTitle = document.getElementById("video__played")
 const nextSongHandler = () => {
 	let song = music.nextSong()
 	myPlayer.pause()
@@ -71,6 +70,7 @@ const nextSongHandler = () => {
 	if (song) {
 		console.log(song)
 		player.loadVideoById(song.link);
+		playedVideoTitle.innerText = song.title
 
 		sendSocket({ song: song, reason: "played" });
 
@@ -81,6 +81,7 @@ const nextSongHandler = () => {
 	song = myMusic.nextSong()
 	if (song) {
 		console.log(song)
+		playedVideoTitle.innerText = song.title
 		myPlayer.src = song.link
 		myPlayer.play()
 	}
