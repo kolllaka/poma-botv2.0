@@ -1,4 +1,5 @@
-# ![Image alt](https://github.com/kolllaka/poma-botv2.0/raw/master/poma.ico) poma-bot v2.0
+# ![Image alt](https://github.com/kolllaka/poma-botv2.0/raw/master/poma.ico)
+# poma-bot v2.0
 ###
 1.  В папку /static/aug/ помещаем все видео для гаданий
 2.  в файле _.env_
