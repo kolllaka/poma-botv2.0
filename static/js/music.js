@@ -1,4 +1,6 @@
-const VolumeLevel = 15
+const constVolumeLevel = 15
+let VolumeLevel = localStorage.getItem('VolumeLevel') || constVolumeLevel;
+localStorage.setItem('VolumeLevel', VolumeLevel)
 
 const sendSocket = (data) => {
 	socket.send(JSON.stringify(data))
@@ -40,7 +42,10 @@ const setMasterVolume = (volumeVal) => {
 	player.setVolume(volumeVal);
 	myPlayer.volume = volumeVal / 100
 }
-volume.addEventListener("input", (e) => setMasterVolume(e.target.value));
+volume.addEventListener("input", (e) => {
+	localStorage.setItem('VolumeLevel', e.target.value)
+	setMasterVolume(e.target.value)
+});
 
 // autoplay video
 function onPlayerReady(event) {
