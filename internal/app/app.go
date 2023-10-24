@@ -40,7 +40,6 @@ func StartApp() {
 
 	// logger
 	logger = logging.GetLogger()
-	logger.Logger.SetLevel(4)
 
 	// config
 	conf = config.NewConfig()
@@ -105,7 +104,7 @@ func onMessage(shard int, topic string, data []byte) {
 				songInfo.Name = name
 				logger.Infoln(*songInfo)
 				if songInfo.Duration > confReward.Duration {
-					logger.Warnf("[warn] request слишком длинный: %dc а должен быть меньше %dc\n", songInfo.Duration, confReward.Duration)
+					logger.Infof("request слишком длинный: %dc а должен быть меньше %dc\n", songInfo.Duration, confReward.Duration)
 
 					return
 				}

@@ -3,7 +3,6 @@ package playlist
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -95,14 +94,16 @@ func ListOfSongsFromPlaylist(playlistId string, key string, next string) []*mode
 		return nil
 	}
 	defer resp.Body.Close()
-	log.Println(resp.StatusCode)
 
-	listResp := ListResp{}
 	if resp.StatusCode != http.StatusOK {
-		log.Println("Всё плохо!")
+		var listResp interface{}
+		json.NewDecoder(resp.Body).Decode(&listResp)
+		logger.Infoln(resp.StatusCode)
+		logger.Traceln(listResp)
 
 		return nil
 	}
+	listResp := ListResp{}
 	json.NewDecoder(resp.Body).Decode(&listResp)
 
 	if listResp.NextPageToken != "" {
@@ -144,11 +145,14 @@ func ReqSongInfo(song string, key string) []*model.Playlist {
 		return nil
 	}
 	defer resp.Body.Close()
-	log.Println(resp.StatusCode)
-	if resp.StatusCode != 200 {
-		var response interface{}
-		json.NewDecoder(resp.Body).Decode(&response)
-		log.Println(response)
+
+	if resp.StatusCode != http.StatusOK {
+		var listResp interface{}
+		json.NewDecoder(resp.Body).Decode(&listResp)
+		logger.Infoln(resp.StatusCode)
+		logger.Traceln(listResp)
+
+		return nil
 	}
 
 	songResp := SongResp{}
