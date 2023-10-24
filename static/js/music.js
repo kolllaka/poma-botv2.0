@@ -1,6 +1,9 @@
+const VolumeLevel = 15
+
 const sendSocket = (data) => {
 	socket.send(JSON.stringify(data))
 }
+
 
 // video
 const myPlayer = document.getElementById("myplayer")
@@ -54,6 +57,7 @@ const handler = () => {
 connectWS(WEBSOCKET, handler)
 // volume 
 const volume = document.getElementById('volume')
+volume.value = VolumeLevel
 const setMasterVolume = (volumeVal) => {
 	player.setVolume(volumeVal);
 	myPlayer.volume = volumeVal / 100
@@ -63,7 +67,7 @@ volume.addEventListener("input", (e) => setMasterVolume(e.target.value));
 // autoplay video
 function onPlayerReady(event) {
 	player.loadVideoById("QxtKHo0iMa4");
-	setMasterVolume(50)
+	setMasterVolume(VolumeLevel)
 
 	event.target.playVideo()
 }
