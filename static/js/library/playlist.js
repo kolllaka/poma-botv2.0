@@ -18,14 +18,12 @@ class Playlist {
 	}
 
 	#updateSongList() {
-		let musicCount = 0
 		let musicTime = 0
 		this.$el.querySelector(".playlist__body").innerHTML = this.songs.map((song, index) => {
-			musicCount++
 			musicTime += song.duration
 			return getTemplateItem(song, index)
 		}).join("")
-		this.$el.querySelector(".playlist__info").innerHTML = `общее количество треков: ${musicCount} на ${durationFormat(musicTime)}`
+		this.$el.querySelector(".playlist__info").innerHTML = `общее количество треков: ${this.songs.length} на ${durationFormat(musicTime)}`
 	}
 
 	#setup() {
