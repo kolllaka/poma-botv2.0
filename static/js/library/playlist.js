@@ -96,7 +96,7 @@ const getTemplateItem = (song, index) => {
 			<div class="itemplaylist__cell">${song.name || "owner"}</div>
 			<div class="itemplaylist__cell itemplaylist__cell-n">${song.title}</div>
 			<div class="itemplaylist__cell">${duration}</div>
-			<div data-index="${index}" class="itemplaylist__cell del btn">x</div>
+			<div data-index="${index}" class="itemplaylist__cell del btn"></div>
 		</div>
 	</li>
 	`
