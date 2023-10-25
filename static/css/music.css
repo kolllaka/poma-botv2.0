@@ -37,13 +37,15 @@ body {
 }
 .video__played {
   font-size: 1.2em;
+  max-width: 300px;
   display: block;
   padding-bottom: 20px;
 }
 .video__played span {
+  display: block;
   color: red;
-  font-size: 1em;
-  max-width: 300px;
+  font-size: 0.6em;
+  line-height: 1.1em;
 }
 .video__btns {
   display: flex;
