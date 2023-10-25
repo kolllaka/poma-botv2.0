@@ -163,6 +163,7 @@ body {
 .itemplaylist__cell.del::after {
   font-family: "icomoon";
   content: "\ea0f";
+  font-size: 0.8em;
   position: absolute;
   top: 50%;
   left: 50%;
