@@ -74,7 +74,7 @@ class Playlist {
 const getTemplate = (title) => {
 	return `
 		<div class="playlist__title">${title}</div>
-		<div class="playlist__info">${title}</div>
+		<div class="playlist__info"></div>
 		<div class="playlist__item itemplaylist itemplaylist-title">
 			<div class="itemplaylist__body">
 				<div class="itemplaylist__cell">№№</div>
