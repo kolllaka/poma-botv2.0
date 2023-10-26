@@ -9,7 +9,7 @@ function connectWS(WEBSOCKET, handler) {
 
 	socket.onmessage = function (e) {
 		msgStruct = JSON.parse(e.data)
-		console.log(`[message] ${msgStruct}`);
+		// console.log(`[message] ${msgStruct}`);
 		// обработчик
 		if (!handler) {
 			console.log("handler not allowed");

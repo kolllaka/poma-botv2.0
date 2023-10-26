@@ -19,15 +19,22 @@ const audio = new Audio()
 const getMetaData = () => {
 	const song = playlistStruct.shift()
 
+
 	if (song) {
+		console.log("shift", song.link);
 		audio.src = song.link
 		audio.onloadedmetadata = () => {
 			song.duration = audio.duration
 
+			//localStorage.setItem(song.name, song.duration)
 			myMusic.addSong(song);
 			audio.pause()
 			audio.src = ""
 
+			getMetaData()
+		}
+
+		audio.onerror = () => {
 			getMetaData()
 		}
 	}
@@ -42,6 +49,17 @@ const handler = () => {
 
 		return
 	}
+
+	// const duration = localStorage.getItem(msgStruct.name)
+	// if (duration) {
+	// 	msgStruct.duration = +duration
+
+	// 	console.log("from cashe");
+	// 	myMusic.addSong(msgStruct);
+
+	// 	return
+	// }
+	console.log("msgStruct.name", msgStruct.link);
 
 	playlistStruct.push(msgStruct)
 

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -180,6 +181,8 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 
 				return
 			}
+
+			log.Printf("%s\n", network.Bytes())
 
 			s.writeByteMsg(MUSIC, network.Bytes())
 		}
