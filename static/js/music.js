@@ -13,24 +13,43 @@ const music = new Playlist("music", [], "очередь заказов", sendSoc
 
 const myMusic = new Playlist("mymusic", [], "мой плейлист")
 
-const getMetaData = async (song) => {
-	const audio = new Audio(song.link)
-	audio.onloadedmetadata = () => {
-		song.duration = audio.duration
 
-		myMusic.addSong(song);
+let playlistStruct = []
+const audio = new Audio()
+const getMetaData = () => {
+	const song = playlistStruct.shift()
+
+	if (song) {
+		audio.src = song.link
+		audio.onloadedmetadata = () => {
+			song.duration = audio.duration
+
+			myMusic.addSong(song);
+			audio.pause()
+			audio.src = ""
+
+			getMetaData()
+		}
 	}
 }
+
+let isResizeble = false
 const WEBSOCKET = 'ws://127.0.0.1:8080/music/ws'
 const handler = () => {
-	console.log(msgStruct)
+	//console.log(msgStruct)
 	if (msgStruct.isreward) {
 		music.addSong(msgStruct)
 
 		return
 	}
 
-	getMetaData(msgStruct)
+	playlistStruct.push(msgStruct)
+
+	if (!isResizeble) {
+		getMetaData()
+
+		isResizeble = true
+	}
 }
 
 connectWS(WEBSOCKET, handler)
@@ -104,14 +123,18 @@ myPlayer.addEventListener('ended', (e) => {
 })
 
 const playedVideoTitle = document.getElementById("video__played")
+const playedVideoOwned = document.getElementById("video__owned")
 const nextSongHandler = () => {
 	let song = music.nextSong()
 	myPlayer.pause()
 	myPlayer.src = ""
+
 	if (song) {
 		console.log(song)
-		player.loadVideoById(song.link);
 		playedVideoTitle.innerText = song.title
+		playedVideoOwned.innerText = song.name
+		player.loadVideoById(song.link);
+
 
 		sendSocket({ song: song, reason: "played" });
 
@@ -123,6 +146,7 @@ const nextSongHandler = () => {
 	if (song) {
 		console.log(song)
 		playedVideoTitle.innerText = song.title
+		playedVideoOwned.innerText = "из моего плейлиста"
 		myPlayer.src = song.link
 		myPlayer.play()
 	}
