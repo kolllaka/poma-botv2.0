@@ -1,4 +1,7 @@
 const constVolumeLevel = 15
+const titleText = "music queue"
+document.title = titleText
+
 let VolumeLevel = localStorage.getItem('VolumeLevel') || constVolumeLevel;
 localStorage.setItem('VolumeLevel', VolumeLevel)
 
@@ -19,17 +22,18 @@ const audio = new Audio()
 const getMetaData = () => {
 	const song = playlistStruct.shift()
 
-
 	if (song) {
-		console.log("shift", song.link);
-		audio.src = song.link
+		audio.src = encodeURI(song.link)
+
 		audio.onloadedmetadata = () => {
-			song.duration = audio.duration
+			song.duration = Math.floor(audio.duration)
 
 			//localStorage.setItem(song.name, song.duration)
 			myMusic.addSong(song);
 			audio.pause()
 			audio.src = ""
+			console.log("addDuration", song);
+			sendSocket({ song: song, reason: "addDuration" })
 
 			getMetaData()
 		}
@@ -59,7 +63,14 @@ const handler = () => {
 
 	// 	return
 	// }
-	console.log("msgStruct.name", msgStruct.link);
+	console.log("msgStruct", msgStruct);
+
+	if (msgStruct.duration && msgStruct.duration > 0) {
+		console.log("add song with duration");
+		myMusic.addSong(msgStruct);
+
+		return
+	}
 
 	playlistStruct.push(msgStruct)
 
@@ -153,6 +164,7 @@ const nextSongHandler = () => {
 		playedVideoOwned.innerText = song.name
 		player.loadVideoById(song.link);
 
+		document.title = song.title
 
 		sendSocket({ song: song, reason: "played" });
 
@@ -166,8 +178,15 @@ const nextSongHandler = () => {
 		playedVideoTitle.innerText = song.title
 		playedVideoOwned.innerText = "из моего плейлиста"
 		myPlayer.src = song.link
+
+		document.title = song.title
+
 		myPlayer.play()
+
+		return
 	}
+
+	document.title = titleText
 }
 
 

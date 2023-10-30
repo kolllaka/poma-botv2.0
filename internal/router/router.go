@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
-	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -14,6 +13,8 @@ import (
 	"github.com/KoLLlaka/poma-botv2.0/internal/logging"
 	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 	"github.com/KoLLlaka/poma-botv2.0/internal/playlist"
+
+	"github.com/KoLLlaka/poma-botv2.0/internal/db"
 
 	"github.com/gorilla/websocket"
 )
@@ -53,7 +54,8 @@ func init() {
 }
 
 type Server struct {
-	logger logging.Logger
+	logger     logging.Logger
+	musicStore db.MusicStore
 
 	conf          *model.Config
 	clients       map[string]*websocket.Conn
@@ -64,14 +66,15 @@ type Server struct {
 	myPlaylist []model.Playlist
 }
 
-func New(logger logging.Logger, conf *model.Config,
+func New(logger logging.Logger, musicStore db.MusicStore, conf *model.Config,
 	augChan chan string, musicChan chan model.Playlist,
 	myPlaylist []model.Playlist,
 ) *Server {
 	return &Server{
-		logger:  logger,
-		conf:    conf,
-		clients: make(map[string]*websocket.Conn),
+		logger:     logger,
+		musicStore: musicStore,
+		conf:       conf,
+		clients:    make(map[string]*websocket.Conn),
 		handleMessage: func(message []byte) {
 			logger.Infof("[message from socket] %s", message)
 		},
@@ -116,6 +119,7 @@ func (s *Server) augws(w http.ResponseWriter, r *http.Request) {
 			if err != nil || mt == websocket.CloseMessage {
 				break // Выходим из цикла, если клиент пытается закрыть соединение или связь прервана
 			}
+
 			go s.handleMessage(message)
 		}
 	}()
@@ -167,12 +171,24 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 				break // Выходим из цикла, если клиент пытается закрыть соединение или связь прервана
 			}
 
+			data := model.MsgFromSocket{}
+			if err := json.Unmarshal(message, &data); err != nil {
+				s.logger.Errorf("[error from socket] %+v", err)
+			}
+
+			switch data.Reason {
+			case "addDuration":
+				s.musicStore.StoreDuration(&data.Song)
+			}
+
 			go s.handleMessage(message)
 		}
 	}()
 
 	go func() {
 		for _, song := range s.myPlaylist {
+			s.musicStore.GetDuration(&song)
+
 			var network bytes.Buffer
 			enc := json.NewEncoder(&network)
 			err := enc.Encode(song)
@@ -181,8 +197,6 @@ func (s *Server) musicws(w http.ResponseWriter, r *http.Request) {
 
 				return
 			}
-
-			log.Printf("%s\n", network.Bytes())
 
 			s.writeByteMsg(MUSIC, network.Bytes())
 		}

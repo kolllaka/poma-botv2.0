@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -12,6 +13,7 @@ import (
 	"github.com/Adeithe/go-twitch"
 
 	"github.com/KoLLlaka/poma-botv2.0/internal/config"
+	"github.com/KoLLlaka/poma-botv2.0/internal/db"
 	"github.com/KoLLlaka/poma-botv2.0/internal/logging"
 	"github.com/KoLLlaka/poma-botv2.0/internal/model"
 	"github.com/KoLLlaka/poma-botv2.0/internal/playlist"
@@ -44,6 +46,13 @@ func StartApp() {
 	// config
 	conf = config.NewConfig()
 
+	// db
+	dataBase, err := db.NewDB("./static/bd/music.db")
+	if err != nil {
+		log.Println(err)
+	}
+	musicStore := db.NewMusicStore(dataBase)
+
 	// load playlist
 	myPlaylist = playlist.LoadMyPlaylist(conf.AudioPath)
 
@@ -53,7 +62,7 @@ func StartApp() {
 	ps.Listen("community-points-channel-v1", conf.UserID)
 
 	// Start Server
-	server := router.New(logger, conf, auguryChannel, musicChanel, myPlaylist)
+	server := router.New(logger, musicStore, conf, auguryChannel, musicChanel, myPlaylist)
 	router := server.Start()
 
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))

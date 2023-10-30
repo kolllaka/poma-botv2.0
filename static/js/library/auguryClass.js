@@ -36,7 +36,7 @@ const getTemplate = () => {
 	<div class="augury__body">
 		<div class="augury__title"></div>
 		<div class="augury__source">
-			<video src="" muted>
+			<video src="">
 			</video> 
 		</div>
 	</div>
