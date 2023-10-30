@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS musics (
+	name TEXT UNIQUE,
+	duration INTEGER NOT NULL
+);

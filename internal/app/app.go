@@ -3,7 +3,6 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -47,9 +46,9 @@ func StartApp() {
 	conf = config.NewConfig()
 
 	// db
-	dataBase, err := db.NewDB("./static/bd/music.db")
+	dataBase, err := db.NewDB("static/db/music.db")
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 	}
 	musicStore := db.NewMusicStore(dataBase)
 
