@@ -13,10 +13,12 @@ class Augury {
 	change(options) {
 		const video = this.$el.querySelector(".augury__source").querySelector("video")
 		video.src = options.link
-		video.play()
-		video.addEventListener('ended', (e) => {
-			aug.destroy();
-		})
+		video.onloadedmetadata = () => {
+			video.play()
+			video.addEventListener('ended', (e) => {
+				aug.destroy();
+			})
+		}
 
 		this.$el.querySelector(".augury__title").innerHTML = options.name
 		this.$el.style.display = "block"
@@ -36,7 +38,7 @@ const getTemplate = () => {
 	<div class="augury__body">
 		<div class="augury__title"></div>
 		<div class="augury__source">
-			<video src="">
+			<video onloadstart="this.volume=0.5" src="">
 			</video> 
 		</div>
 	</div>
